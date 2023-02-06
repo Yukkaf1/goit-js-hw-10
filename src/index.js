@@ -1,43 +1,37 @@
 import './css/styles.css';
+import _debounce from 'lodash.debounce';
+import Notiflix from 'notiflix';
 
-const DEBOUNCE_DELAY = 300;
+const DEBOUNCE_DELAY = 600;
+const COUNTRIES_API = txt =>
+  `https://restcountries.com/v3.1/name/${txt}`;
 
 const refs = {
-    input: document.querySelector('#search-box'),
+    seachBox: document.querySelector('#search-box'),
     contryList: document.querySelector('.country list'),
     countryInfo: document.querySelector('.country-info'),
 }
 
-const name = 'peru';
-
-refs.input.addEventListener('input', debounce(searchCountries, DEBOUNCE_DELAY));
-
-function fetchCountries(name) {
-    return fetch(`https://restcountries.com/v3.1/name/${name}?fields=name,capital,population,flags,languages`)
+function fetchCountries(txt) {
+    if (!txt) {
+        countryList.innerHTML = '';
+        return;
+      }    
+fetch(COUNTRIES_API(txt))
 .then(response => {
-    console.log('country', response.json());
-    return response.json();
-})};
-
-
-console.log(fetchCountries(name));
-
-function searchCountries(e) {
-    const inputData = refs.input.ariaValueMax.trim();
-    fetchCountries(inputData).then(renderCountryList);
-}
-
-fetchCountries(name).then(renderCountryList)
-
-function renderCountryList(responceAPI) {
-    console.log(responceAPI);
-    if (responceAPI.length === 1) {
-        refs.countryInfo.innerHTML = renderCountryInfo(responceAPI[0]);
+    if (!response.ok) {
+        countryList.innerHTML = `<h2>No country with that name</h2>`;
+        Notiflix.Notify.failure('Oops, there is no country with that name');
+      } else return response.json();
+    })
+.then(countries => {
+    if (countries.length === 1) {
+        refs.countryInfo.innerHTML = renderCountryInfo(countries[0]);
 } else {
-    const renderListCountry = responceAPI.map(country => renderCountriesList(country)).join('');
-    refs.contryList.insertAdjacentHTML('beforeend', renderListCountry);
+    const countriesArray = countries.map(country => renderCountriesList(country)).join('');
+    refs.contryList.insertAdjacentHTML('beforeend', countriesArray);
 }
-};
+})};
 
 function renderCountriesList({flags, name}) {
     return `<li class="country-listInfo>
@@ -48,11 +42,11 @@ function renderCountriesList({flags, name}) {
 }
 
 function renderCountryInfo({name, flags, capital, population, languages}) {
-    return `<li class="country-main-info">
-    <div class="wrapper-county-info">
-    <img class = "country-flag-info" scr='${flags.svg}'/>
-    <h2 class="country-list-name">${name.official}</h2>
-    </div>
+    return `
+    <h2>
+    <img style="" width: 60px" scr=${flags.svg}/>
+    ${name.official}</h2>
+    
     <div class="country-secondary-info">
     <p><b>capital:</b> ${capital} </p>
     <p><b>population:</b>${population}</p>
@@ -61,3 +55,6 @@ function renderCountryInfo({name, flags, capital, population, languages}) {
     </li>
     `;
 }
+  
+refs.seachBox.addEventListener('input', (e) => 
+_debounce((fetchCountries(e.target.value)), DEBOUNCE_DELAY))

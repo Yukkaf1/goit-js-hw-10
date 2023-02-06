@@ -26,7 +26,9 @@
     "@vimeo/player": "^2.18.0",
     "flatpickr": "^4.6.13",
     "gh-pages": "^4.0.0",
+    "lodash.debounce": "^4.0.8",
     "lodash.throttle": "^4.1.1",
+    "notiflix": "^3.2.6",
     "simplelightbox": "^2.11.0"
   },
   "devDependencies": {
