@@ -1,5 +1,5 @@
 {
-  "name": "js-hw-09",
+  "name": "js-hw-10",
   "version": "1.0.0",
   "description": "",
   "source": "src/index.html",
@@ -19,9 +19,9 @@
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Yukkaf1/goit-js-hw-09/issues"
+    "url": "https://github.com/Yukkaf1/goit-js-hw-10/issues"
   },
-  "homepage": "https://yukkaf1.github.io/goit-js-hw-09/",
+  "homepage": "https://yukkaf1.github.io/goit-js-hw-10/",
   "dependencies": {
     "@vimeo/player": "^2.18.0",
     "flatpickr": "^4.6.13",
