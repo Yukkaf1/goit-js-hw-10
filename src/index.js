@@ -3,6 +3,7 @@ import _debounce from 'lodash.debounce';
 import Notiflix from 'notiflix';
 
 const DEBOUNCE_DELAY = 300;
+
 const COUNTRIES_API = txt =>
   `https://restcountries.com/v3.1/name/${txt}`;
 
@@ -68,8 +69,10 @@ function renderCountriesInfo({capital, population, languages}) {
     </li>
     `;
 }
+
+const fetchCountriesDebounced = _debounce(fetchCountries, DEBOUNCE_DELAY);
+
+refs.seachBox.addEventListener('input', function (e) {
+    fetchCountriesDebounced(e.target.value.trim());
+  });
   
-refs.seachBox.addEventListener('input', (e) => {
-    e.preventDefault();
-    _debounce((fetchCountries(e.target.value.trim()), DEBOUNCE_DELAY))
-})
