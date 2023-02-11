@@ -18,4 +18,16 @@ body {
   padding: 8px;
 }
 
+li {
+  list-style: none;
+}
+
+.flag {
+  width: 60px;
+}
+
+.country-info {
+  padding-left: 20px;
+}
+
 /*# sourceMappingURL=index.77a9bc14.css.map */
