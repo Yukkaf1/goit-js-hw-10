@@ -8,7 +8,7 @@ const COUNTRIES_API = txt =>
 
 const refs = {
     seachBox: document.querySelector('#search-box'),
-    contryList: document.querySelector('.country list'),
+    countryList: document.querySelector('.country-list'),
     countryInfo: document.querySelector('.country-info'),
 }
 
@@ -20,34 +20,32 @@ function fetchCountries(txt) {
 fetch(COUNTRIES_API(txt))
 .then(response => {
     if (!response.ok) {
-        countryList.innerHTML = `<h2>No country with that name</h2>`;
+        renderCountriesList.innerHTML = `<h2>No country with that name</h2>`;
         Notiflix.Notify.failure('Oops, there is no country with that name');
       } else return response.json();
     })
 .then(countries => {
-    if (countries.length === 1) {
-        refs.countryInfo.innerHTML = renderCountryInfo(countries[0]);
-} else {
-    const countriesArray = countries.map(country => renderCountriesList(country)).join('');
-    refs.contryList.insertAdjacentHTML('beforeend', countriesArray);
-}
-})};
+    if (countries.length === 1) 
+        refs.countryInfo.innerHTML = renderCountriesInfo(countries[0]);
+   else (countries.length > 1 && countries.length < 11)
+    {
+        const countriesArray = countries.map(country => renderCountriesList(country)).join('');
+        refs.countryList.innerHTML = countriesArray;
+    }
+} )};
 
-function renderCountriesList({flags, name}) {
-    return `<li class="country-listInfo>
-    <img class="country-flag" src="${flags.svg}"/>
-    <h2 class="country-list-name">${name.official}</h2>
+function renderCountriesList(country) {
+    return `<li> 
+    <h2 class="country-list-name">
+    <img class = "flag" src = "${country.flags.svg}" />
+    ${country.name.official}</h2>
     </li>
     `;
 }
 
-function renderCountryInfo({name, flags, capital, population, languages}) {
+function renderCountriesInfo({capital, population, languages}) {
     return `
-    <h2>
-    <img style="" width: 60px" scr=${flags.svg}/>
-    ${name.official}</h2>
-    
-    <div class="country-secondary-info">
+    <div class="country-info">
     <p><b>capital:</b> ${capital} </p>
     <p><b>population:</b>${population}</p>
     <p><b>languages:</b> ${Object.values(languages)}</p>
@@ -57,4 +55,4 @@ function renderCountryInfo({name, flags, capital, population, languages}) {
 }
   
 refs.seachBox.addEventListener('input', (e) => 
-_debounce((fetchCountries(e.target.value)), DEBOUNCE_DELAY))
+    _debounce((fetchCountries(e.target.value)), DEBOUNCE_DELAY))
