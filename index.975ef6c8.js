@@ -590,9 +590,9 @@ function renderCountriesInfo({ capital , population , languages  }) {
     </li>
     `;
 }
-refs.seachBox.addEventListener("input", (e)=>{
-    e.preventDefault();
-    (0, _lodashDebounceDefault.default)((fetchCountries(e.target.value.trim()), DEBOUNCE_DELAY));
+const fetchCountriesDebounced = (0, _lodashDebounceDefault.default)(fetchCountries, DEBOUNCE_DELAY);
+refs.seachBox.addEventListener("input", function(e) {
+    fetchCountriesDebounced(e.target.value.trim());
 });
 
 },{"./css/styles.css":"1CY4s","lodash.debounce":"3JP5n","notiflix":"5z0Oc","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"1CY4s":[function() {},{}],"3JP5n":[function(require,module,exports) {
