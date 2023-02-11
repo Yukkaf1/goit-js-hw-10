@@ -538,13 +538,17 @@ var _lodashDebounce = require("lodash.debounce");
 var _lodashDebounceDefault = parcelHelpers.interopDefault(_lodashDebounce);
 var _notiflix = require("notiflix");
 var _notiflixDefault = parcelHelpers.interopDefault(_notiflix);
-const DEBOUNCE_DELAY = 600;
+const DEBOUNCE_DELAY = 300;
 const COUNTRIES_API = (txt)=>`https://restcountries.com/v3.1/name/${txt}`;
 const refs = {
     seachBox: document.querySelector("#search-box"),
     countryList: document.querySelector(".country-list"),
     countryInfo: document.querySelector(".country-info")
 };
+function clearInput() {
+    refs.countryInfo.innerHTML = "";
+    refs.countryList.innerHTML = "";
+}
 function fetchCountries(txt) {
     if (!txt) {
         countryList.innerHTML = "";
@@ -556,13 +560,17 @@ function fetchCountries(txt) {
             (0, _notiflixDefault.default).Notify.failure("Oops, there is no country with that name");
         } else return response.json();
     }).then((countries)=>{
-        if (countries.length === 1) refs.countryInfo.innerHTML = renderCountriesInfo(countries[0]);
+        clearInput();
+        if (countries.length > 10) {
+            (0, _notiflixDefault.default).Notify.info("Too many matches found. Please enter a more specific name.");
+            return;
+        } else if (countries.length === 1) refs.countryInfo.innerHTML = renderCountriesInfo(countries[0]);
         else countries.length > 1 && countries.length;
         {
             const countriesArray = countries.map((country)=>renderCountriesList(country)).join("");
             refs.countryList.innerHTML = countriesArray;
         }
-    });
+    }).catch(console.log);
 }
 function renderCountriesList(country) {
     return `<li> 
@@ -582,7 +590,10 @@ function renderCountriesInfo({ capital , population , languages  }) {
     </li>
     `;
 }
-refs.seachBox.addEventListener("input", (e)=>(0, _lodashDebounceDefault.default)(fetchCountries(e.target.value), DEBOUNCE_DELAY));
+refs.seachBox.addEventListener("input", (e)=>{
+    e.preventDefault();
+    (0, _lodashDebounceDefault.default)((fetchCountries(e.target.value.trim()), DEBOUNCE_DELAY));
+});
 
 },{"./css/styles.css":"1CY4s","lodash.debounce":"3JP5n","notiflix":"5z0Oc","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"1CY4s":[function() {},{}],"3JP5n":[function(require,module,exports) {
 /**
