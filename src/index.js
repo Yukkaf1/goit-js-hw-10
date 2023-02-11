@@ -35,6 +35,7 @@ fetch(COUNTRIES_API(txt))
 } )};
 
 function renderCountriesList(country) {
+
     return `<li> 
     <h2 class="country-list-name">
     <img class = "flag" src = "${country.flags.svg}" />
@@ -44,6 +45,7 @@ function renderCountriesList(country) {
 }
 
 function renderCountriesInfo({capital, population, languages}) {
+
     return `
     <div class="country-info">
     <p><b>capital:</b> ${capital} </p>
