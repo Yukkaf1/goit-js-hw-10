@@ -20,7 +20,7 @@ function clearInput() {
 
 function fetchCountries(txt) {
     if (!txt) {
-        countryList.innerHTML = '';
+        refs.countryList.innerHTML = '';
         return;
       }    
 fetch(COUNTRIES_API(txt))
